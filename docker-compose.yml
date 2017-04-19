@@ -1,0 +1,55 @@
+version: "2"
+
+services:
+  mysql-pinba:
+    image: tony2001/pinba
+    ports:
+      - "3306:3306"
+      - "30002:30002"
+    container_name: amsterdam-php-pinba-mysql
+    networks:
+      - app_net
+
+  php:
+    build:
+      dockerfile: Dockerfile.php
+      context: .
+    container_name: amsterdam-php-pinba-php
+    volumes:
+      - .:/code
+    networks:
+      - app_net
+
+  statsd:
+    build:
+      dockerfile: Dockerfile.statsd
+      context: .
+    container_name: amsterdam-php-pinba-statsd
+    ports:
+      - "8125:8125"
+    networks:
+      - app_net
+    volumes:
+      - ./statsite.conf:/statsite.conf
+
+  influxdb:
+    image: influxdb
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+      - "2003:2003"
+    expose:
+      - "8086"
+      - "8083"
+      - "2003"
+    container_name: amsterdam-php-pinba-influxdb
+    environment:
+      INFLUXDB_GRAPHITE_ENABLED: "true"
+    networks:
+      - app_net
+    volumes:
+      - ./influxdb.conf:/etc/influxdb/influxdb.conf:ro
+
+networks:
+  app_net:
+    driver: bridge

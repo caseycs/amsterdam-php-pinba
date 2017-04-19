@@ -1,0 +1,14 @@
+FROM ubuntu:xenial
+
+RUN apt-get update
+RUN apt-get install -y autoconf automake  libtool git pkg-config python
+
+RUN mkdir /src \
+    && git clone https://github.com/statsite/statsite.git /src/statsite \
+    && cd /src/statsite \
+    && ./autogen.sh \
+    && ./configure \
+    && make
+
+COPY statsd-entrypoint.sh /statsd-entrypoint.sh
+ENTRYPOINT ["/statsd-entrypoint.sh"]
