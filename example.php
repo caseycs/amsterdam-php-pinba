@@ -8,12 +8,13 @@ $controllerActions = [
     ],
     'user::logIn' => [
         'memcache::get' => 5,
-        'mysql::select' => 2,
+        'memcache::set' => 10,
+        'mysql::select' => 3,
     ],
     'user::logOut' => [
         'memcache::get' => 5,
-        'memcache::set' => 4,
-        'mysql::select' => 2,
+        'memcache::set' => 2,
+        'mysql::select' => 1,
     ],
 ];
 
