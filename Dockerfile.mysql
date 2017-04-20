@@ -1,0 +1,5 @@
+FROM tony2001/pinba
+
+#RUN echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'root';flush privileges" > /tmp.sql \
+#    timeout sudo -u mysql /local/mysql/bin/mysql \
+#    && /local/mysql/bin/mysql < /tmp.sql
